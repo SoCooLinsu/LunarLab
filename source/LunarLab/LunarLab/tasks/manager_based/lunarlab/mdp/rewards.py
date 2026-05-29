@@ -97,3 +97,15 @@ def feet_slip(env, sensor_cfg: SceneEntityCfg, asset_cfg: SceneEntityCfg = Scene
     slip = body_vel + torch.linalg.cross(body_ang_vel, r_contact, dim=-1)
     reward = torch.sum(slip[:, :, :2].norm(dim=-1) * contacts, dim=1)
     return reward
+
+def wheel_vel_variance_penalty(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg) -> torch.Tensor:
+    """
+    4개 바퀴의 회전 속도(Joint Velocity) 간의 편차(분산)에 페널티를 부과합니다.
+    모든 바퀴가 동일한 속도로 구르도록 강제하여 직진 주행 안정성을 높이고 편구동을 방지합니다.
+    """
+    asset = env.scene[asset_cfg.name]
+    
+    wheel_joint_vel = asset.data.joint_vel[:, asset_cfg.joint_ids]
+    vel_variance = torch.var(wheel_joint_vel, dim=1, unbiased=False)
+    
+    return vel_variance

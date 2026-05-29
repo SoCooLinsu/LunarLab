@@ -17,7 +17,9 @@ from isaaclab.utils import configclass
 
 from LunarLab.robots import unitree_actuators
 
-UNITREE_MODEL_DIR = r"c:\unitree_model"  # Replace with the actual path to your unitree_model directory
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UNITREE_MODEL_DIR = os.path.abspath(os.path.join(CURRENT_DIR, "..", "..", "..", "..", "unitree_model"))  # Replace with the actual path to your unitree_model directory
 UNITREE_ROS_DIR = "path/to/unitree_ros"  # Replace with the actual path to your unitree_ros package
 
 
@@ -160,7 +162,7 @@ UNITREE_GO2W_CFG = UnitreeArticulationCfg(
                 ".*_hip_.*": 0.5,
                 ".*_thigh_.*": 0.5,
                 ".*_calf_.*": 0.5,
-                ".*_foot_.*": 1.0,
+                ".*_foot_.*": 0.5,
             },
             friction=0.01,
         ),

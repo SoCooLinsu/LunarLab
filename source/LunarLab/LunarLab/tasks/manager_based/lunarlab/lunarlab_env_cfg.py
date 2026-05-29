@@ -27,8 +27,6 @@ from . import mdp
 ##
 
 from LunarLab.robots.unitree import UNITREE_GO2W_CFG as ROBOT_CFG
-from LunarLab.robots.go2w import GO2W_CONFIG
-
 
 ##
 # Scene definition
@@ -118,7 +116,7 @@ class ActionsCfg:
     leg_joint_pos = mdp.JointPositionActionCfg(
         asset_name="robot",
         joint_names=[".*_hip_joint", ".*_thigh_joint", ".*_calf_joint"],
-        scale=2.5,
+        scale=2.0,
         use_default_offset=True,
     )
     wheel_joint_vel = mdp.JointVelocityActionCfg(
@@ -276,15 +274,22 @@ class RewardsCfg:
             "sensor_cfg": SceneEntityCfg("contact_forces", body_names=["Head_.*", ".*_hip", ".*_thigh", ".*_calf"]),
         },
     )
-    non_slip = RewTerm(
-        func=mdp.feet_slip,
-        weight=-0.0e-1,
-        params={
-            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_foot"]),
-            "asset_cfg": SceneEntityCfg("robot", body_names=[".*_foot"]),
-            "wheel_radius": 0.0889
-        },
-    )
+    # non_slip = RewTerm(
+    #     func=mdp.feet_slip,
+    #     weight=-0.0e-1,
+    #     params={
+    #         "sensor_cfg": SceneEntityCfg("contact_forces", body_names=[".*_foot"]),
+    #         "asset_cfg": SceneEntityCfg("robot", body_names=[".*_foot"]),
+    #         "wheel_radius": 0.0889
+    #     },
+    # )
+    # penalty_wheel_vel_variance = RewTerm(
+    #     func=mdp.wheel_vel_variance_penalty,
+    #     weight=-0.001,
+    #     params={
+    #         "asset_cfg": SceneEntityCfg("robot", joint_names=[".*_foot_joint"])
+    #     },
+    # )
     # -- optional penalties
     flat_orientation_l2 = RewTerm(func=mdp.flat_orientation_l2, weight=-2.5)
 
