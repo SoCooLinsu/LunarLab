@@ -11,7 +11,7 @@ GO2W_CONFIG = ArticulationCfg(
     
 
     init_state=ArticulationCfg.InitialStateCfg(
-        pos=(0.0, 0.0, 0.45),  # 바닥에 파묻히지 않게 공중에서 스폰
+        pos=(0.0, 0.0, 0.55),
         joint_pos={
             ".*_hip_joint": 0.0,       # -1 ~ 1 // scale 1.0
             ".*_thigh_joint": 0.96,    # -1.57 ~ 3.49 // scale 2.53
@@ -21,18 +21,28 @@ GO2W_CONFIG = ArticulationCfg(
     ),
     
     actuators={
-        "legs": ImplicitActuatorCfg(
-            joint_names_expr=[".*_hip_joint", ".*_thigh_joint", ".*_calf_joint"],
-            stiffness=50.0,
-            damping=0.1,
-            effort_limit_sim=30.0,
+        "legs1": ImplicitActuatorCfg(
+            joint_names_expr=[".*_hip_joint", ".*_thigh_joint"],
+            stiffness=20.0,
+            damping=0.5,
+            friction=0.01,
+            effort_limit_sim=23.7,
+            velocity_limit_sim=30.0,
+        ),
+        "legs2": ImplicitActuatorCfg(
+            joint_names_expr=[".*_calf_joint"],
+            stiffness=20.0,
+            damping=0.5,
+            friction=0.01,
+            effort_limit_sim=35.5,
             velocity_limit_sim=30.0,
         ),
         "wheels": ImplicitActuatorCfg(
             joint_names_expr=[".*_foot_joint"], # 아까 URDF의 revolute 바퀴 조인트
             stiffness=0.0,
-            damping=5.0,
-            effort_limit_sim=30.0,
+            damping=2.0,
+            friction=0.01,
+            effort_limit_sim=23.7,
             velocity_limit_sim=30.0,
         ),
     },
